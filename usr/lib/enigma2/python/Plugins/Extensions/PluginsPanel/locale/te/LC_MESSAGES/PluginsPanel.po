@@ -17,4 +17,4 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Plugins Panel"
-msgstr ""
+msgstr "ప్లగిన్‌ల ప్యానెల్"
