@@ -97,9 +97,7 @@ class PluginsPanel(Screen):
         self.list = [PluginEntryComponent(plugin)
                      for plugin in self.pluginlist]
         self.list_new = []
-
         config_rds = open(self.plugin_path + '/config', 'w')
-
         for plugin_data in self.list:
             plugin_start, plugin_name, plugin_desc, plugin_icon = plugin_data
 
@@ -115,11 +113,6 @@ class PluginsPanel(Screen):
             config_rds.write('"%s" "%s" "%s"\n' % (plugin_name[7], '0', '0'))
         config_rds.close()
         self.list = self.list_new
-
-        # self.list = List([])
-        # if config.plugins.PluginsPanel.hits.value:
-        # self.list.sort(key=lambda x: int(x[4]))
-        # self.list.reverse()
         print('[wall-e]: Plugin count:', len(self.list))
 
         self.posi = []
@@ -162,16 +155,23 @@ class PluginsPanel(Screen):
                 skincontent + '<ePixmap pixmap="~/images/green.png" position="10,410" size="20,20" zPosition="5" alphatest="blend" /><widget name="key_green" position="35,402" size="364,40" valign="center" halign="left" zPosition="10" font="Regular;20" foregroundColor="yellow" transparent="1" /></screen>'
             print('self.skin hd: ', self.skin)
         Screen.__init__(self, session)
-        self['actions'] = ActionMap(['OkCancelActions',
-                                     'ColorActions',
-                                     'DirectionActions'], {'cancel': self.exit,
-                                                           'ok': self.ok,
-                                                           'green': self.wall_sort,
-                                                           'blue': self.wall_config,
-                                                           'left': self.left,
-                                                           'right': self.right,
-                                                           'up': self.up,
-                                                           'down': self.down}, -1)
+        self['actions'] = ActionMap(
+            [
+                'OkCancelActions',
+                'ColorActions',
+                'DirectionActions'
+            ],
+            {
+                'cancel': self.exit,
+                'ok': self.ok,
+                'green': self.wall_sort,
+                'blue': self.wall_config,
+                'left': self.left,
+                'right': self.right,
+                'up': self.up,
+                'down': self.down
+            }, -1
+        )
         self['frame'] = MovingPixmap()
         self['info'] = Label('')
         self['disc'] = Label('')
@@ -188,8 +188,6 @@ class PluginsPanel(Screen):
                 self['zeile' + str(x)].hide()
 
         self.achsex = 0
-        # if config.plugins.PluginsPanel.hits.value:
-        # print('YEEES')
         self.onFirstExecBegin.append(self._onFirstExecBegin)
 
     def wall_sort(self):
@@ -203,7 +201,6 @@ class PluginsPanel(Screen):
 
     def closen(self, data):
         print('data: ', data)
-        # print(config.plugins.PluginsPanel.hits.value)
         self.close(self.session, 'main')
 
     def paintnew(self, a, b):
@@ -243,7 +240,7 @@ class PluginsPanel(Screen):
                 self.achsex -= 5
 
         if self.achsex <= int(self.bt):
-            self.achsex -= self.achsex  # len(self.list) - 1
+            self.achsex -= self.achsex
         else:
             self.achsex = 0
 
@@ -303,24 +300,14 @@ class PluginsPanel_config(Screen, ConfigListScreen):
         self.plugin_path = plugin_path
         self.skin_path = plugin_path
         self.session = session
-        # self.list = []
         self.onChangedEntry = []
         self['config2'] = mylist([])
-        # ConfigListScreen.__init__(self, self.list)
-        # self.list.append(getConfigListEntry('Sort by plugin hits:', config.plugins.PluginsPanel.hits))
-        # self['config'].setList(self.list)
-        # self['config'].setItemHeight(50)
-        # self['key_green'] = Label('Sort')
         self['setupActions'] = ActionMap(['SetupActions', 'ColorActions'], {
             'ok': self.change_hide,
-            # 'green': self.changeHits,
             'cancel': self.saveConfig}, -1)
         self.readconfig()
 
     def readconfig(self):
-        # list = self.list
-        # del list[:]
-
         config_read = open(self.plugin_path + '/config', 'r')
         self.config_list = []
         for line in config_read.readlines():
@@ -331,9 +318,6 @@ class PluginsPanel_config(Screen, ConfigListScreen):
 
         config_read.close()
         self['config2'].l.setList(self.config_list)
-        # self.list.append(getConfigListEntry('Sort by plugin hits:', config.plugins.PluginsPanel.hits.value))
-        # self["config"].list = self.list
-        # self["config"].l.setList(self.list)
 
     def show_menu(self, name, hits, hide):
         res = [(name, hits, hide)]
@@ -427,9 +411,6 @@ class PluginsPanel_config(Screen, ConfigListScreen):
 
     def saveConfig(self):
         print('save')
-        # for x in self['config'].list:
-        # x[1].save()
-
         self.close('True')
 
     def exit(self):
@@ -458,7 +439,6 @@ def menu(menuid, **kwargs):
 def Plugins(path, **kwargs):
     global plugin_path
     plugin_path = path
-    # icon = 'plugin.png'
     list = []
     list.append(
         PluginDescriptor(
